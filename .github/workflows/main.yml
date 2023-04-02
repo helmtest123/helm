@@ -37,6 +37,11 @@ jobs:
         run: |
           eval $(minikube docker-env --shell sh) && docker rmi -f node:14 node:16 node:18 buildpack-deps:bulster buildpack-deps:bullseye node:18-alpine 
         shell: bash
+      - name: Free disk space
+        run: |
+          df --human-readable
+          sudo apt clean
+          docker rmi $(docker image ls --all --quiet)
       - name: verify
         run: |
           docker images && df -h
