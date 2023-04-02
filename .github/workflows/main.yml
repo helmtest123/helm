@@ -41,6 +41,9 @@ jobs:
         run: |
           df --human-readable
           sudo apt clean
+          docker ps
+          docker stop $(docker ps -a -q)
+          docker rm $(docker ps -a -q)
           docker rmi -f $(docker image ls --all --quiet)
       - name: verify
         run: |
