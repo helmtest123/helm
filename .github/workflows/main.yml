@@ -1,0 +1,66 @@
+name: helm
+
+on: [push]
+
+jobs:
+  example:
+    name: minikube
+    runs-on: ubuntu-latest
+    steps:
+      - name: Maximize build space
+        uses: AdityaGarg8/remove-unwanted-software@v1
+        with:
+          remove-android: 'true'
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Minikube
+        uses: manusa/actions-setup-minikube@v2.7.2
+        with:
+          minikube version: 'v1.28.0'
+          kubernetes version: 'v1.25.4'
+      - name: verify 1
+        run: |
+          docker images && df -h
+        shell: bash
+      - name: Download and install Helm
+        run: |
+          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+          chmod 700 get_helm.sh
+          ./get_helm.sh
+      - name: Delete huge unnecessary tools folder
+        run: rm -rf /opt/hostedtoolcache && rm -rf /usr/share/dotnet && rm -rf /opt/ghc && rm -rf "/usr/local/share/boost" &&  rm -rf "$AGENT_TOOLSDIRECTORY"
+      - name: minikube set 100gb
+        run: |
+          minikube config set disk-size 100GB && minikube delete && minikube start && df -h
+        shell: bash
+      - name: eval
+        run: |
+          eval $(minikube docker-env --shell sh) && docker rmi -f node:14 node:16 node:18 buildpack-deps:bulster buildpack-deps:bullseye node:18-alpine 
+        shell: bash
+      - name: verify
+        run: |
+          docker images && df -h
+        shell: bash
+      - name: pull triton
+        run: |
+          docker pull instill/tritonserver:22.12
+        shell: bash
+      - name: verify
+        run: |
+          docker images && df -h
+        shell: bash
+      - name: load
+        run: |
+          minikube image load instill/tritonserver:22.12
+        shell: bash
+      - name: Run script file
+        run: |
+           chmod +x ./scr
+           ./scr
+        shell: bash
+      - name: verify
+        run: |
+          docker images && df -h
+        shell: bash
+      - name: Check vdp namespace
+        run: kubectl get po -n vdp
