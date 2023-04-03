@@ -19,6 +19,9 @@ export CONSOLE_CONTAINER_PORT=$(kubectl get pod --namespace vdp $CONSOLE_POD_NAM
 
 echo " "
 
+kubectl --namespace vdp port-forward $APIGATEWAY_POD_NAME 8080:${APIGATEWAY_CONTAINER_PORT} & &>/dev/null
+kubectl --namespace vdp port-forward $CONSOLE_POD_NAME 3000:${CONSOLE_CONTAINER_PORT} & &>/dev/null
+
 kubectl get po -n vdp
 
 if nc -zv localhost 3000 &>/dev/null; then
@@ -40,7 +43,9 @@ if nc -zv localhost 8080 &>/dev/null; then
 sleep 10
 
 export MODEL_POD_NAME=$(kubectl get pods --namespace vdp -l "app.kubernetes.io/component=model,app.kubernetes.io/instance=vdp" -o jsonpath="{.items[0].metadata.name}")
-while [[ $(kubectl get pods $MODEL_POD_NAME -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}' --namespace vdp) != "True" ]]; do echo "waiting for pod" && sleep 1; done
+#while [[ $(kubectl get pods $MODEL_POD_NAME -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}' --namespace vdp) != "True" ]]; do echo "waiting for pod" && sleep 1; done
+
+kubectl get pods $MODEL_POD_NAME --namespace vdp
 
 pod_list=$(kubectl get pods -n $namespace --no-headers=true | awk '{print $1}')
 
@@ -73,8 +78,6 @@ done
 pod_gw=$(kubectl get po -n vdp --no-headers=true | awk '{print $1}' | grep gateway)
 pod_console=$(kubectl get po -n vdp --no-headers=true | awk '{print $1}' | grep console)
 
-kubectl --namespace vdp port-forward $APIGATEWAY_POD_NAME 8080:${APIGATEWAY_CONTAINER_PORT} & &>/dev/null
-kubectl --namespace vdp port-forward $CONSOLE_POD_NAME 3000:${CONSOLE_CONTAINER_PORT} & &>/dev/null
 
 kubectl describe po $triton -n vdp
 
