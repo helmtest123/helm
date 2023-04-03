@@ -39,6 +39,9 @@ if nc -zv localhost 8080 &>/dev/null; then
 
 sleep 10
 
+export MODEL_POD_NAME=$(kubectl get pods --namespace vdp -l "app.kubernetes.io/component=model,app.kubernetes.io/instance=vdp" -o jsonpath="{.items[0].metadata.name}")
+while [[ $(kubectl get pods $MODEL_POD_NAME -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}' --namespace vdp) != "True" ]]; do echo "waiting for pod" && sleep 1; done
+
 pod_list=$(kubectl get pods -n $namespace --no-headers=true | awk '{print $1}')
 
 for pod_name in $pod_list
