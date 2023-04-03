@@ -13,6 +13,10 @@ jobs:
           remove-android: 'true'
       - name: Checkout
         uses: actions/checkout@v3
+      - name: ls
+        run: |
+           ls -a .github/workflows
+        shell: bash
       - name: Setup Minikube
         uses: medyagh/setup-minikube@master
       - name: verify 1
