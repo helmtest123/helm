@@ -34,8 +34,6 @@ if nc -zv localhost 8080 &>/dev/null; then
           echo -e "8080 port is ready to use.\n"
           fi
 
-#kubectl wait --for=condition=Ready pod --all -n $namespace --timeout=300s
-
 sleep 10
 
 kubectl --namespace vdp port-forward $APIGATEWAY_POD_NAME 8080:${APIGATEWAY_CONTAINER_PORT} & &>/dev/null
@@ -75,9 +73,7 @@ done
 pod_gw=$(kubectl get po -n vdp --no-headers=true | awk '{print $1}' | grep gateway)
 pod_console=$(kubectl get po -n vdp --no-headers=true | awk '{print $1}' | grep console)
 
-kubectl describe po $MODEL_POD_NAME --namespace vdp
-
-sleep 200
+kubectl wait --for=condition=Ready pod --all -n $namespace --timeout=300s
 
 kubectl describe po $MODEL_POD_NAME --namespace vdp
 
