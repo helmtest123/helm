@@ -80,9 +80,10 @@ pod_console=$(kubectl get po -n vdp --no-headers=true | awk '{print $1}' | grep 
 
 kubectl describe po $MODEL_POD_NAME --namespace vdp
 
-sleep 150
+sleep 220
 
 kubectl describe po $MODEL_POD_NAME --namespace vdp
+
 
 curl --silent --fail http://localhost:3000 &>/dev/null
 echo "Console OK"
