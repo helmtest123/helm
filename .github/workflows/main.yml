@@ -50,6 +50,9 @@ jobs:
           export SHELL=/bin/bash
           eval $(minikube docker-env)
           docker pull instill/tritonserver:22.12
+          docker pull postgres:15-alpine
+          docker pull temporalio/admin-tools:1.19.1
+          docker pull instill/model-backend:0.14.0-alpha
           docker images
       - name: Verify
         run: |
