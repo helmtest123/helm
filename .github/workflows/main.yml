@@ -32,7 +32,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
       - name: Delete huge unnecessary tools folder
-        run: rm -rf /opt/hostedtoolcache && rm -rf /usr/share/dotnet && rm -rf /opt/ghc && rm -rf "/usr/local/share/boost" &&  rm -rf "$AGENT_TOOLSDIRECTORY"
+        run: rm -rf /usr/share/dotnet && rm -rf /opt/ghc && rm -rf "/usr/local/share/boost" &&  rm -rf "$AGENT_TOOLSDIRECTORY"
       - name: minikube set 100gb
         run: |
           minikube config set disk-size 100GB && minikube delete && minikube start && df -h
@@ -69,6 +69,7 @@ jobs:
       
       - name: execute py script
         run: python d.py
+        shell: bash
         
       - name: Check vdp namespace
-        run: kubectl get po -n vdp
+        run: kubectl get po -n vdp --verbose
