@@ -20,8 +20,6 @@ export CONSOLE_CONTAINER_PORT=$(kubectl get pod --namespace vdp $CONSOLE_POD_NAM
 
 echo " "
 
-kubectl get po -n vdp
-
 if nc -zv localhost 3000 &>/dev/null; then
             echo -e "WARN: 3000 port is already in use.\n"
           else
@@ -76,7 +74,6 @@ pod_console=$(kubectl get po -n vdp --no-headers=true | awk '{print $1}' | grep 
 kubectl wait --for=condition=Ready pod --all -n $namespace --timeout=300s
 
 kubectl describe po $MODEL_POD_NAME --namespace vdp
-
 
 curl --silent --fail http://localhost:3000 &>/dev/null
 echo "Console OK"
