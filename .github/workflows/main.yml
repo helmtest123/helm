@@ -53,6 +53,12 @@ jobs:
           docker pull postgres:15-alpine
           docker pull temporalio/admin-tools:1.19.1
           docker pull instill/model-backend:0.14.0-alpha
+          docker pull instill/connector-backend:0.8.0-alpha
+          docker pull instill/api-gateway:0.2.3-alpha
+          docker pull instill/mgmt-backend:0.3.2-alpha
+          docker pull instill/triton-conda-env:latest-cpu
+          docker pull instill/console:0.20.0-alpha
+          docker pull instill/pipeline-backend:0.10.0-alpha
           docker images
       - name: Verify
         run: |
