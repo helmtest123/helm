@@ -60,7 +60,7 @@ triton=$(kubectl get po -n vdp | grep triton | awk -F " " '{print $1}')
 
 kubectl describe po $triton -n vdp
 
-sleep 100
+sleep 300
 
 
 for pod_name in $pod_list
