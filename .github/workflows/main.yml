@@ -5,7 +5,7 @@ on: [push]
 jobs:
   example:
     name: minikube
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Maximize build space
         uses: AdityaGarg8/remove-unwanted-software@v1
@@ -45,7 +45,7 @@ jobs:
       - name: Build image
         run: |
           export SHELL=/bin/bash
-          eval $(minikube -p minikube docker-env)
+          eval $(minikube docker-env)
           docker pull instill/tritonserver:22.12
           echo -n "verifying images:"
           docker images
