@@ -35,7 +35,7 @@ jobs:
         run: rm -rf /usr/share/dotnet && rm -rf /opt/ghc && rm -rf "/usr/local/share/boost" &&  rm -rf "$AGENT_TOOLSDIRECTORY"
       - name: minikube set 100gb
         run: |
-          minikube config set disk-size 100GB && minikube delete && minikube start && df -h
+          minikube config set memory 6400 && minikube delete && minikube start && df -h
         shell: bash   
       - name: Free disk space
         run: |
