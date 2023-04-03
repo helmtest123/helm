@@ -62,14 +62,6 @@ jobs:
            chmod +x ./scr
            ./scr
         shell: bash
-      - name: verify
-        run: |
-          docker images && df -h
-        shell: bash
-      
-      - name: execute py script
-        run: python d.py
-        shell: bash
         
       - name: Check vdp namespace
-        run: kubectl get po -n vdp --verbose
+        run: kubectl get po -n vdp
