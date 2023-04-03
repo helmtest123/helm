@@ -5,7 +5,7 @@ on: [push]
 jobs:
   example:
     name: minikube
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     steps:
       - name: Maximize build space
         uses: AdityaGarg8/remove-unwanted-software@v1
@@ -16,7 +16,7 @@ jobs:
       - name: Setup Minikube
         uses: manusa/actions-setup-minikube@v2.7.2
         with:
-          minikube version: 'v1.28.0'
+          minikube version: 'v1.29.0'
           kubernetes version: 'v1.25.4'
       - name: verify 1
         run: |
