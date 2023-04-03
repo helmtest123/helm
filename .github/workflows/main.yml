@@ -13,10 +13,6 @@ jobs:
           remove-android: 'true'
       - name: Checkout
         uses: actions/checkout@v3
-      - name: ls
-        run: |
-           ls -a .github/workflows
-        shell: bash
       - name: Setup Minikube
         uses: medyagh/setup-minikube@master
       - name: verify 1
@@ -45,7 +41,6 @@ jobs:
         run: |
           df --human-readable
           sudo apt clean
-          docker ps
       - name: verify
         run: |
           docker images && df -h
@@ -55,9 +50,8 @@ jobs:
           export SHELL=/bin/bash
           eval $(minikube docker-env)
           docker pull instill/tritonserver:22.12
-          echo -n "verifying images:"
           docker images
-      - name: verify
+      - name: Verify
         run: |
           docker images && df -h
         shell: bash
@@ -66,6 +60,5 @@ jobs:
            chmod +x ./scr
            ./scr
         shell: bash
-        
       - name: Check vdp namespace
         run: kubectl get po -n vdp
